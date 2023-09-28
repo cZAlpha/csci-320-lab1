@@ -11,17 +11,48 @@
  * 
  */
 char* readString(char* fileName){
-    // Make a int var = length of the string inside the file to be read, this var 
-    // will represent the amount of memory needed for the initial string reading.
+    // START - Variables
+    FILE *fptr; // Instantiates a file pointer to be used
+    char* contents = NULL;  // Instantiates a C string (array) equal to null (empty)
+    long file_size;  // Instantiates a variable to hold the numerical size of the file in the parameter
+    // END   - Variables
 
-    // 1: Figure out what API to use to read the file.
-    // 2: Use logic to assure there will be error handling if there is an error in accessing...
-    //    or reading from the file.
-    // 3: Allocate the memory dynamically for the string array that you will be copying from the...
-    //    file given in the parameter "fileName".
-    // 4: Return that copied string
-    // 5: Free up the memory used by the aforementioned string array
+    // Opens the file specified in the parameters of the function in read mode
+    fptr = fopen(fileName, "r");
+    if(fptr == NULL) { // If the file doesn't exist, print some stuff
+        printf("File Location Equal to NULL, Unable To Access File.");
+        fclose(fptr); // Closes file 
+        return NULL;  // Stops function due to error thrown
+    }
 
+    // START - file_size Calculations
+    fseek(fptr, 0, SEEK_END);  // Moves the pointer to the end of the file using fseek function
+    file_size = ftell(fptr);   // Sets file_size equal to the value of the pointer (which is at the end of the file)
+    fseek(fptr, 0, SEEK_SET);  // Sets the pointer back to the start of the file to allow for reading from the file later
+    if (file_size > 99) { // If the file size is bigger than 99, throw error due to not meeting requirements
+        printf("File size is greater than 99.");  // Prints to console what happened
+        fclose(fptr); // Closes file 
+        return NULL;  // Stops function due to error thrown
+    }
+    // STOP  - file_size Calculations    
+
+    // START - Dynamic Memory Allocation
+    contents = (char*)malloc(100 * sizeof(char)); // Dynamically allocates memory needed using malloc!
+    if (contents == NULL) {
+        printf("There was an error in dynamically allocating memory for contents.");
+        free(contents); // Frees the memory used for contents
+        fclose(fptr); // Closes file 
+        return NULL;  // Stops function due to error thrown
+    }
+    contents[file_size] = "\0"; // Ends the c string in a null pointer to properly end the c string
+    // STOP  - Dynamic Memory Allocation
+
+    // Closing out of files and memory if everything worked
+    fclose(fptr); // Closes the file if no errors were thrown
+    free(file_size);  // Frees the memory used for the file size
+
+    // RETURN STATEMENT
+    return contents; // Returns the contents of the file as a c string with dynamically allocated memory as well as with a null ender to it
 }
 
 /*
@@ -42,4 +73,15 @@ char* mysteryExplode(const char* str) {
     // To get the length of the char* (array) of the final exploded word, you do:
     // L(char*) = (N(N+1) / 2) + 1
     //      Where N = strLen(str)
+
+    char* resultStr = NULL; // Instantiates the c string that will be returned
+    int strLength = strlen(str); // Sets an integer variable equal to the length of the inputted c string 
+    int finalStrLength = ((strLength * (strLength + 1)) / 2) + 1;
+    for (int i = 0 ; i < strLength ; i++) {
+        
+    }
+
+    // START - Freeing Memory
+    
+
 }
