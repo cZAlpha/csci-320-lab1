@@ -1,6 +1,7 @@
 // My work is below
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "lab1.h"
 
 /*
@@ -80,14 +81,21 @@ char* mysteryExplode(const char* str) {
     // L(char*) = (N(N+1) / 2) + 1
     //      Where N = strLen(str)
 
-    char* resultStr = NULL; // Instantiates the c string (array of char) that will be returned
+    char* resultStr = "\0"; // Instantiates the c string (array of char) that will be returned to an empty string
     int strLength = strlen(str); // Sets an integer variable equal to the length of the inputted c string 
     int finalStrLength = ((strLength * (strLength + 1)) / 2) + 1; // Calculates the final length of the string after the explosion using equation given by rasamny
+    resultStr = (char*)malloc(MAX_LINE_LEN * sizeof(char));  // Dynamically allocates memory for the result String
+    
+
+    // Algorithm 
     for (int i = 0 ; i < strLength ; i++) {
-        
+        char* concatStr = "\0";  // makes empty jawn
+        concatStr = (char*)malloc(MAX_LINE_LEN * sizeof(char)); // dynamically allocates memory
+        strncpy(concatStr, str, i);  // Substring cutting and copying
+        strcat(resultStr, concatStr);  // Concats the string
+        free(concatStr); // Frees the memory used in the var, effectively deleting any info. inside of it
     }
 
     // START - Freeing Memory
-    
 
 }
