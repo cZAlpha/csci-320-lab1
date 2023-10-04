@@ -1,6 +1,7 @@
 // My work is below
 #include <stdio.h>
 #include <stdlib.h>
+#include "lab1.h"
 
 /*
  * readString - reads a line from a file given by
@@ -13,17 +14,18 @@
 char* readString(char* fileName){
     // START - Variables
     FILE *fptr; // Instantiates a file pointer to be used
-    char* contents = NULL;  // Instantiates a C string (array) equal to null (empty)
+    char* contents = "\0";  // Instantiates a C string (array) equal to null pointer (empty)
     long file_size;  // Instantiates a variable to hold the numerical size of the file in the parameter
     // END   - Variables
 
     // Opens the file specified in the parameters of the function in read mode
     fptr = fopen(fileName, "r");
     if(fptr == NULL) { // If the file doesn't exist, print some stuff
-        printf("File Location Equal to NULL, Unable To Access File.");
-        fclose(fptr); // Closes file 
+        fprintf(stderr, "File Location Equal to NULL, Unable To Access File.");
         return NULL;  // Stops function due to error thrown
     }
+
+    // USE: fgets or fscanf
 
     // START - file_size Calculations
     fseek(fptr, 0, SEEK_END);  // Moves the pointer to the end of the file using fseek function
@@ -37,15 +39,19 @@ char* readString(char* fileName){
     // STOP  - file_size Calculations    
 
     // START - Dynamic Memory Allocation
-    contents = (char*)malloc(100 * sizeof(char)); // Dynamically allocates memory needed using malloc!
+    contents = (char*)malloc(MAX_LINE_LEN * sizeof(char)); // Dynamically allocates memory needed using malloc!    
     if (contents == NULL) {
-        printf("There was an error in dynamically allocating memory for contents.");
+        fprintf(stderr, "There was an error in dynamically allocating memory for contents.");
         free(contents); // Frees the memory used for contents
         fclose(fptr); // Closes file 
         return NULL;  // Stops function due to error thrown
     }
-    contents[file_size] = "\0"; // Ends the c string in a null pointer to properly end the c string
     // STOP  - Dynamic Memory Allocation
+
+    // START - Reading from the file and putting the information into 'contents'
+    fgets(contents, file_size, fptr);  // Read stuff from the file and put it into contents
+    contents[MAX_LINE_LEN] = "\0"; // Ends the c string in a null pointer to properly end the c string
+    // STOP  - Reading from the file and putting the information into 'contents'
 
     // Closing out of files and memory if everything worked
     fclose(fptr); // Closes the file if no errors were thrown
@@ -74,9 +80,9 @@ char* mysteryExplode(const char* str) {
     // L(char*) = (N(N+1) / 2) + 1
     //      Where N = strLen(str)
 
-    char* resultStr = NULL; // Instantiates the c string that will be returned
+    char* resultStr = NULL; // Instantiates the c string (array of char) that will be returned
     int strLength = strlen(str); // Sets an integer variable equal to the length of the inputted c string 
-    int finalStrLength = ((strLength * (strLength + 1)) / 2) + 1;
+    int finalStrLength = ((strLength * (strLength + 1)) / 2) + 1; // Calculates the final length of the string after the explosion using equation given by rasamny
     for (int i = 0 ; i < strLength ; i++) {
         
     }
