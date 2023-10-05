@@ -51,12 +51,13 @@ char* readString(char* fileName){
 
     // START - Reading from the file and putting the information into 'contents'
     fgets(contents, file_size, fptr);  // Read stuff from the file and put it into contents
-    contents[MAX_LINE_LEN] = "\0"; // Ends the c string in a null pointer to properly end the c string
+    contents[MAX_LINE_LEN]; // Ends the c string in a null pointer to properly end the c string
     // STOP  - Reading from the file and putting the information into 'contents'
 
     // Closing out of files and memory if everything worked
     fclose(fptr); // Closes the file if no errors were thrown
-    free(file_size);  // Frees the memory used for the file size
+    
+    //free(file_size);  // Frees the memory used for the file size
 
     // RETURN STATEMENT
     return contents; // Returns the contents of the file as a c string with dynamically allocated memory as well as with a null ender to it
@@ -77,20 +78,17 @@ char* readString(char* fileName){
  * 
  */
 char* mysteryExplode(const char* str) {
-    // To get the length of the char* (array) of the final exploded word, you do:
-    // L(char*) = (N(N+1) / 2) + 1
-    // Where N = strLen(str)
+    int strLength = strlen(str);
+    int finalStrLength = ((strLength * (strLength + 1)) / 2) + 1;
+    char* resultStr = (char*)malloc(finalStrLength); // Allocate memory for the result string
 
-    int strLength = strlen(str); // Sets an integer variable equal to the length of the inputted c string 
-    int finalStrLength = ((strLength * (strLength + 1)) / 2) + 1; // Calculates the final length of the string after the explosion using equation given by rasamny
-    char resultStr[finalStrLength]; // Instantiates the c string (array of char) that will be returned to an empty string
+    resultStr[0] = '\0'; // init. the result str as empty string
 
-    // Algorithm 
     for (int i = 0 ; i < strLength ; i++) {
-        char concatStr[finalStrLength];  // makes empty c string array
-        strncpy(concatStr, str, i);  // Substring cutting and copying
-        strcat(resultStr, concatStr);  // Concats the string
-        free(concatStr); // Frees the memory used in the var, effectively deleting any info. inside of it
+        char concatStr[finalStrLength];
+        strncpy(concatStr, str, i);
+        concatStr[i] = '\0'; // Null-terminate the substring
+        strcat(resultStr, concatStr);
     }
 
     return resultStr;
