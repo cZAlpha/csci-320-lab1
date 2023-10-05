@@ -83,12 +83,16 @@ char* mysteryExplode(const char* str) {
     char* resultStr = (char*)malloc(finalStrLength); // Allocate memory for the result string
 
     resultStr[0] = '\0'; // init. the result str as empty string
+    char prevChar = '\0'; // Init. as empty string
 
-    for (int i = 0 ; i < strLength ; i++) {
-        char concatStr[finalStrLength];
-        strncpy(concatStr, str, i);
-        concatStr[i] = '\0'; // Null-terminate the substring
-        strcat(resultStr, concatStr);
+    for (int i = 0; i <= strLength; i++) {
+        if (i <= 1) { // If the first char has already been copied
+            char prevConcatStr[2] = {prevChar, '\0'}; // Append the previous character to the result string
+            strcat(resultStr, prevConcatStr); // Concating
+        }
+        char concatStr[2] = {str[i], '\0'}; // Create a substring of length 1
+        strcat(resultStr, concatStr); // Copy over
+        prevChar = str[i]; // Update the previous character
     }
 
     return resultStr;
